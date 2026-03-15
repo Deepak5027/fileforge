@@ -1,0 +1,41 @@
+# Environment files — NEVER commit these
+.env
+.env.local
+.env.production
+backend-node/.env
+backend-python/.env
+frontend/.env
+frontend/.env.local
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes (local)
+mongo_data/
+redis_data/
+
+# Temp files
+/tmp/fileforge/
+
+# IDE
+.vscode/
+.idea/
+*.swp

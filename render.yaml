@@ -1,0 +1,61 @@
+# render.yaml — Render.com service definitions
+# Place this at the root of the repo or in each service folder
+# Deploy: Connect repo to Render, it auto-detects this file
+
+services:
+  # ── Node.js API ─────────────────────────────
+  - type: web
+    name: fileforge-api-node
+    env: node
+    region: singapore
+    plan: starter
+    rootDir: backend-node
+    buildCommand: npm ci --omit=dev
+    startCommand: node src/app.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false          # Set in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: PYTHON_API_URL
+        value: https://fileforge-api-python.onrender.com
+      - key: CLIENT_URL
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_ID
+        sync: false
+
+  # ── Python FastAPI ──────────────────────────
+  - type: web
+    name: fileforge-api-python
+    env: docker
+    region: singapore
+    plan: starter
+    rootDir: backend-python
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: FASTAPI_PORT
+        value: 8000
+      - key: NODE_API_URL
+        value: https://fileforge-api-node.onrender.com
+      - key: FILE_EXPIRY_SECONDS
+        value: 3600
+      - key: MAX_FILE_SIZE_MB
+        value: 50
