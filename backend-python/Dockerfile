@@ -1,8 +1,9 @@
 FROM python:3.12-slim
 
-# System dependencies: LibreOffice, FFmpeg, ImageMagick, Pandoc, ClamAV
+# Lightweight install — LibreOffice removed (too large for free tier)
+# Image, data, audio/video conversions all work
+# For DOCX/ODT/RTF support add LibreOffice on a paid plan
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libreoffice \
     ffmpeg \
     imagemagick \
     pandoc \
@@ -10,8 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 \
-    libffi-dev \
-    shared-mime-info \
+    libmagic1 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

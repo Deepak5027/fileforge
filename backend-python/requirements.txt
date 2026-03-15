@@ -9,13 +9,10 @@ python-dotenv==1.0.1
 Pillow==10.4.0
 cairosvg==2.7.1
 
-# Document processing
+# Document processing (no LibreOffice needed)
 pypdf==4.3.1
 python-docx==1.1.2
-odfpy==1.4.1
-ebooklib==0.18
 html2text==2024.2.26
-weasyprint==62.3
 markdown==3.6
 
 # Data processing
@@ -25,6 +22,4 @@ PyYAML==6.0.1
 dicttoxml==1.7.16
 lxml==5.2.2
 xmltodict==0.13.0
-
-# Virus scanning (optional — comment out if ClamAV not installed)
-# clamd==1.0.2
+python-magic==0.4.27
