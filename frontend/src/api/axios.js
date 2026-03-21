@@ -8,15 +8,27 @@ const api = axios.create({
   timeout: 60000,
 })
 
+let isRefreshing = false
+
 api.interceptors.response.use(
   res => res,
   async err => {
-    if (err.response?.status === 401) {
+    // FIX 1: Avoid infinite refresh loop — only attempt once
+    if (err.response?.status === 401 && !isRefreshing) {
+      isRefreshing = true
       try {
-        await axios.post('/api/auth/refresh', {}, { withCredentials: true })
+        // FIX 2: Use the configured `api` instance (not raw axios)
+        // so it uses the correct baseURL in production
+        await api.post('/auth/refresh')
+        isRefreshing = false
         return api.request(err.config)
       } catch {
-        window.location.href = '/login'
+        isRefreshing = false
+        // FIX 3: Only redirect if not already on login/register page
+        if (!window.location.pathname.includes('/login') &&
+            !window.location.pathname.includes('/register')) {
+          window.location.href = '/login'
+        }
       }
     }
     return Promise.reject(err)
